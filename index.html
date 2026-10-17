@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="utf-8">
+<title>Hiša priložnosti</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap">
+<style>
+/* Layout: institutional and photographic (in the manner of aspeninstitute.org), in the light of the seaside-village header: limewashed-stone white pages, a deep-sea "night" only behind the pinned mission statement and in the footer. Palette is taken from the photo (butter-yellow facade, lime shutters, terracotta roofs, turquoise sea, meadow, sandy path) with the logo's yellow→green brush as the accent. Deliberately single-theme (light). */
+:root{
+  --paper:#FBF8F1;
+  --mist:#E2F3F7;
+  --sand:#F7EDD6;
+  --white:#FFFFFF;
+  --ink:#123A46;
+  --deep:#0C3443;
+  --muted:rgba(18,58,70,.74);
+  --line:rgba(18,58,70,.14);
+  --on-photo:#FFFFFF;
+  --on-photo-muted:rgba(255,255,255,.84);
+  --on-photo-line:rgba(255,255,255,.22);
+  --sea:#1593B5;
+  --sky:#3BA7F0;
+  --leaf:#6FB42C;
+  --leaf-soft:#9CCB45;
+  --sun:#F4D04A;
+  --terra:#D9622B;
+  --brush:linear-gradient(90deg,var(--sun),var(--leaf-soft));
+  --wave:linear-gradient(90deg,var(--leaf),var(--sea));
+  --f:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{margin:0;padding-left:0;padding-right:0;background:var(--paper)}
+body{margin:0;padding:0;width:100%;background:var(--paper);color:var(--ink);font-family:var(--f);font-size:17px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.015em;line-height:1.12;text-wrap:balance}
+p{margin:0}
+.wrap{--gutter:clamp(20px,3.6vw,64px);max-width:1680px;margin:0 auto;padding-left:max(var(--gutter),env(safe-area-inset-left,0px));padding-right:max(var(--gutter),env(safe-area-inset-right,0px))}
+.label{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+
+/* gradient-outline button: meadow→sea on light pages, the logo's sun→leaf brush over photos */
+.btn{--line-g:var(--wave);--fill:var(--ink);--hover:var(--white);position:relative;display:inline-flex;align-items:center;gap:10px;padding:15px 24px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:transparent;border:0;cursor:pointer;isolation:isolate;transition:color .25s}
+.btn::before{content:"";position:absolute;inset:0;padding:2px;background:var(--line-g);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:-1}
+.btn::after{content:"";position:absolute;inset:0;background:var(--fill);z-index:-2;transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.btn:hover{color:var(--hover)}
+.btn:hover::after{transform:scaleX(1)}
+.topbar:not(.solid) .btn,.statement .btn,.stories .btn{--line-g:var(--brush);--fill:var(--brush);--hover:var(--ink);color:var(--on-photo)}
+.more{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.more svg{width:26px;height:10px;transition:transform .25s}
+.more:hover svg{transform:translateX(5px)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--sea);outline-offset:4px}
+
+/* ---------- top utility bar ---------- */
+.util{background:var(--deep)}
+.util .wrap{display:flex;justify-content:center;gap:26px;padding-block:9px;overflow-x:auto;scrollbar-width:none}
+.util a{font-size:13px;font-weight:600;white-space:nowrap;color:var(--on-photo-muted)}
+.util a:hover{color:var(--sun)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;z-index:1;min-height:clamp(600px,100svh,1000px);display:flex;flex-direction:column}
+.nav{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding-block:18px;color:var(--on-photo)}
+.nav .logo img{height:84px;width:auto;filter:drop-shadow(0 2px 10px rgba(255,255,255,.55))}
+.nav .links{display:flex;gap:34px}
+.nav .links a{font-size:14px;font-weight:700;padding-block:6px;border-bottom:2px solid transparent;text-shadow:0 1px 12px rgba(11,42,53,.45)}
+.nav .links a:hover,.nav .links a.on{border-color:var(--sun)}
+.nav .tools{display:flex;justify-content:flex-end;align-items:center;gap:18px}
+.nav .tools svg{width:20px;height:20px}
+.menu{width:42px;height:42px;background:var(--white);color:var(--ink);display:grid;place-items:center}
+.hero-text{position:relative;margin:auto;width:100%;padding-block:150px 90px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);text-align:left;color:var(--on-photo)}
+.hero-text > *{grid-column:2;min-width:0}
+.hero-text h1{font-weight:700;text-transform:lowercase;letter-spacing:-.02em;line-height:1.02;text-shadow:0 3px 34px rgba(11,42,53,.55),0 1px 3px rgba(11,42,53,.35)}
+.hero-text h1 .ln:first-child{font-size:clamp(40px,5.2vw,88px);font-weight:800;letter-spacing:-.01em;line-height:1;text-transform:uppercase}
+.hero-text h1 .grad{font-size:clamp(22px,2.4vw,40px);font-weight:700;letter-spacing:-.01em;margin-top:.35em}
+.hero-text h1 .ln{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.hero-text h1 .ln > span{display:block}
+.hero-text h1 .grad > span{color:var(--sun)}
+
+/* ---------- statement (over the darkened photo) ---------- */
+.statement{position:relative;z-index:1;overflow:hidden;min-height:clamp(560px,100svh,1000px);display:flex;align-items:center;color:var(--on-photo)}
+.statement .wrap{width:100%;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px;align-items:center;padding-block:clamp(72px,10vw,140px)}
+.statement h2{font-size:clamp(30px,3.9vw,54px);font-weight:700;line-height:1.14}
+.statement h2 em{font-style:normal;color:var(--sun)}
+.statement .side{display:flex;flex-direction:column;gap:28px;align-items:flex-start;color:var(--on-photo-muted)}
+.statement canvas{position:absolute;right:-180px;top:50%;width:620px;height:620px;transform:translateY(-50%);opacity:.3;pointer-events:none}
+
+/* ---------- focus areas ---------- */
+.areas{padding-block:clamp(64px,8vw,110px)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head h2{font-size:clamp(28px,3.2vw,44px)}
+.sec-head .kicker{color:var(--sea);margin-bottom:12px;display:block}
+.sec-head p{color:var(--muted);max-width:46ch;margin-top:12px}
+.area-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.area{position:relative;aspect-ratio:4/5.4;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:var(--mist);color:var(--on-photo);border-radius:4px}
+.area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+.area::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,42,53,0) 32%,rgba(11,42,53,.9) 100%);z-index:1}
+.area > *:not(img){position:relative;z-index:2}
+.area .num{position:absolute;top:22px;left:24px;font-size:13px;font-weight:700;color:var(--on-photo);opacity:.9}
+.area h3{font-size:26px;margin-bottom:8px}
+.area p{color:var(--on-photo-muted);font-size:15px;margin-bottom:18px}
+.area .bar{height:3px;width:44px;background:var(--brush);margin-bottom:16px;transition:width .4s}
+.area:hover img{transform:scale(1.05)}
+.area:hover .bar{width:100%}
+
+/* ---------- feature news ---------- */
+.feature{border-top:1px solid var(--line)}
+.feature .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px);align-items:center;padding-block:clamp(64px,8vw,110px)}
+.feature .photo{position:relative;max-width:100%}
+.feature .photo img{width:100%;aspect-ratio:4/3.1;object-fit:cover}
+.feature .photo::after{content:"";position:absolute;left:-14px;bottom:-14px;width:46%;height:46%;border-left:3px solid var(--sun);border-bottom:3px solid var(--sea);pointer-events:none}
+.feature .copy{display:flex;flex-direction:column;gap:22px;align-items:flex-start;min-width:0}
+.feature .copy .label{color:var(--sea)}
+.feature h2{font-size:clamp(28px,3.3vw,46px)}
+.feature p{color:var(--muted);max-width:58ch}
+
+/* ---------- events ---------- */
+.events{background:var(--sand);padding-block:clamp(64px,8vw,110px)}
+.tabs{display:flex;gap:22px}
+.tabs a{font-size:14px;font-weight:700;color:var(--muted);padding-bottom:4px}
+.tabs a.on{color:var(--ink);border-bottom:2px solid var(--terra)}
+.ev-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.ev{display:flex;flex-direction:column;gap:14px}
+.ev .pic{position:relative;overflow:hidden;aspect-ratio:16/10.5;max-width:100%}
+.ev .pic img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.ev:hover .pic img{transform:scale(1.04)}
+.ev .tag{position:absolute;left:0;bottom:0;background:var(--sand);padding:8px 12px 0 0;color:var(--terra)}
+.ev h3{font-size:21px}
+.ev time{font-size:14px;color:var(--muted)}
+.ev .more{color:var(--ink)}
+.ev .more svg{color:var(--terra)}
+.ev-foot{display:flex;align-items:center;gap:24px;margin-top:44px}
+.ev-foot .rule{flex:1;height:1px;background:var(--line)}
+.arrows{display:flex;gap:10px}
+.arrows a{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);background:var(--white)}
+.arrows svg{width:16px;height:16px}
+
+/* ---------- stories (full-bleed photo) ---------- */
+.stories{position:relative;overflow:hidden;background:var(--deep);color:var(--on-photo)}
+.stories .bg{position:absolute;top:0;right:0;bottom:0;width:68%;height:100%;object-fit:cover;object-position:center 30%}
+.stories::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,var(--deep) 0%,var(--deep) 30%,rgba(11,42,53,.55) 55%,rgba(11,42,53,0) 80%)}
+.stories .wrap{position:relative;z-index:2;padding-block:clamp(100px,12vw,180px);display:flex;flex-direction:column;align-items:flex-start;gap:22px}
+.stories .wrap > *{max-width:520px}
+.stories h2{font-size:clamp(34px,5vw,68px);text-transform:lowercase;letter-spacing:-.02em}
+.stories p{font-size:19px;color:var(--on-photo);opacity:.92}
+@media (max-width:820px){
+  .stories .bg{width:100%}
+  .stories::before{background:linear-gradient(180deg,rgba(11,42,53,.3) 0%,rgba(11,42,53,.92) 70%)}
+  .stories .wrap{padding-block:260px 64px}
+}
+
+/* ---------- newsletter (turquoise band) ---------- */
+.news{background:var(--sea);color:var(--white)}
+.news .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:56px}
+.news h2{font-size:clamp(24px,2.6vw,34px);margin-bottom:12px}
+.news p{color:rgba(255,255,255,.88);max-width:60ch}
+.news form{display:flex;gap:0;background:var(--white);min-width:0;box-shadow:0 10px 30px -12px rgba(11,42,53,.45)}
+.news input{flex:1;min-width:0;border:0;background:transparent;padding:16px 18px;font:500 16px var(--f);color:var(--ink)}
+.news input::placeholder{color:rgba(14,52,64,.55)}
+.news button{border:0;background:var(--sun);color:var(--ink);padding:0 22px;font:800 12px var(--f);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .25s}
+.news button:hover{background:var(--leaf-soft)}
+.news .ok{grid-column:2;font-size:14px;font-weight:600;color:var(--white)}
+
+/* ---------- footer ---------- */
+footer{position:relative;background:var(--deep) right 60%/cover no-repeat;overflow:hidden;color:var(--on-photo)}
+footer::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,42,53,.05) 0%,rgba(11,42,53,.5) 30%,var(--deep) 58%)}
+.wordmark{position:relative;padding-top:clamp(120px,16vw,240px);white-space:nowrap;font-weight:800;font-size:clamp(64px,13.5vw,210px);letter-spacing:-.045em;line-height:.9;text-align:center;color:rgba(255,255,255,.92);text-transform:lowercase;overflow:hidden;text-shadow:0 4px 40px rgba(11,42,53,.35)}
+.wordmark span{background:var(--brush);-webkit-background-clip:text;background-clip:text;color:transparent}
+.foot{position:relative;display:grid;grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr));gap:40px;padding-block:64px 36px}
+.foot .about{display:flex;flex-direction:column;gap:18px;color:var(--on-photo-muted);font-size:15px;max-width:34ch}
+.foot .about img{height:130px;width:auto;align-self:flex-start;filter:drop-shadow(0 0 18px rgba(255,255,255,.18))}
+.social{display:flex;gap:14px}
+.social a{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--on-photo-line);border-radius:50%}
+.social a:hover{border-color:var(--sun);color:var(--sun)}
+.social svg{width:16px;height:16px}
+.foot h4{margin:0 0 16px;font-size:14px;font-weight:600;color:var(--on-photo-muted)}
+.foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.foot li a{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.foot li a:hover{color:var(--sun)}
+.foot li.txt{font-size:15px;color:var(--on-photo-muted)}
+.legal{position:relative;border-top:1px solid var(--on-photo-line);padding-block:22px 30px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--on-photo-muted)}
+
+/* ---------- hero subline ---------- */
+.hero-text .sub{display:block;margin-top:22px;color:var(--on-photo);text-shadow:0 1px 14px rgba(11,42,53,.6)}
+.nav .book{padding:12px 18px}
+
+/* ---------- facts strip ---------- */
+.facts{background:var(--white);border-bottom:1px solid var(--line)}
+.facts .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.fact{padding:30px 24px 30px 0;display:flex;flex-direction:column;gap:6px}
+.fact + .fact{border-left:1px solid var(--line);padding-left:24px}
+.fact b{font-size:19px;font-weight:700}
+.fact b::before{content:"";display:block;width:28px;height:4px;border-radius:2px;background:var(--wave);margin-bottom:12px}
+.fact span{color:var(--muted);font-size:15px}
+
+/* ---------- ways of working ---------- */
+.ways{background:var(--mist);padding-block:clamp(64px,8vw,110px)}
+.way-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.way{padding:28px 24px 34px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:12px;min-width:0}
+.way:not(:nth-child(4n+1)){padding-left:24px;border-left:1px solid var(--line)}
+.way svg{width:30px;height:30px;color:var(--sea)}
+.way h3{font-size:19px}
+.way p{color:var(--muted);font-size:15px}
+
+/* ---------- team ---------- */
+.team{padding-block:clamp(64px,8vw,110px)}
+.team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,48px)}
+.person{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:28px;align-items:end}
+.portrait{position:relative;aspect-ratio:4/5;max-width:100%;background:linear-gradient(180deg,#BFE3F6,var(--mist));overflow:hidden;display:grid;place-items:center}
+.portrait::before{content:"";position:absolute;inset:auto -20% -30% -20%;height:70%;background:var(--brush);opacity:.95;border-radius:50% 50% 0 0}
+.portrait b{position:relative;font-size:clamp(44px,5vw,68px);font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.portrait i{position:absolute;left:12px;top:12px;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.person .who{display:flex;flex-direction:column;gap:12px;padding-bottom:6px}
+.person .who .label{color:var(--sea)}
+.person h3{font-size:clamp(24px,2.4vw,32px)}
+.person p{color:var(--muted);font-size:15px}
+.person .todo{border-left:2px solid var(--sun);padding-left:12px;font-style:italic}
+.team-foot{margin-top:48px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:28px 32px;background:var(--sand);border-left:4px solid var(--terra)}
+.team-foot p{max-width:60ch;color:var(--muted)}
+.team-foot b{color:var(--ink)}
+
+.example{display:inline-block;margin-left:12px;padding:4px 10px;border:1px solid var(--line);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);vertical-align:middle}
+
+@media (max-width:1020px){
+  .way-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .way:not(:nth-child(4n+1)){padding-left:0;border-left:0}
+  .way:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}
+  .team-grid{grid-template-columns:1fr}
+  .facts .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fact:nth-child(3){border-left:0;padding-left:0}
+  .fact:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:540px){
+  .way-grid{grid-template-columns:1fr}
+  .way:nth-child(even){padding-left:0;border-left:0}
+  .person{grid-template-columns:1fr}
+  .portrait{max-width:280px}
+  .facts .wrap{grid-template-columns:1fr}
+  .fact + .fact{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+  .nav .book{display:none}
+  .wordmark{white-space:normal;font-size:22vw;line-height:.95}
+  .wordmark span{display:block}
+}
+
+
+/* ---------- motion layer ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:transform .5s cubic-bezier(.2,.7,.2,1),background-color .35s,box-shadow .35s}
+.topbar::before{content:"";position:absolute;inset:0 0 -40px;background:linear-gradient(180deg,rgba(11,42,53,.42),rgba(11,42,53,0));pointer-events:none;transition:opacity .35s;z-index:-1}
+.topbar.solid{background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line),0 10px 30px -18px rgba(11,42,53,.35)}
+.topbar.solid::before{opacity:0}
+.topbar.solid .nav{color:var(--ink)}
+.topbar.solid .nav .links a{text-shadow:none}
+.topbar.solid .nav .logo img{filter:none}
+.topbar.solid .menu{background:var(--ink);color:var(--white)}
+.topbar.hide{transform:translateY(-100%)}
+.topbar .nav{transition:padding .35s}
+.topbar.solid .nav{padding-block:10px}
+
+.topbar .util .wrap{max-width:none}
+.topbar .logo img{transition:height .35s}
+.topbar.solid .logo img{height:60px}
+
+.stage{position:relative;background:var(--deep);overflow:clip}
+main{position:relative;z-index:2;background:var(--paper)}
+.stage-bg{position:sticky;top:0;height:100vh;height:100svh;margin-bottom:-100vh;margin-bottom:-100svh;overflow:hidden;z-index:0}
+.stage-bg img{width:100%;height:100%;object-fit:cover;object-position:70% 45%;transform:scale(1.06);transform-origin:28% 45%}
+.stage-shade{position:absolute;inset:0;background:linear-gradient(270deg,rgba(12,52,67,.62) 0%,rgba(12,52,67,.38) 30%,rgba(12,52,67,0) 52%),linear-gradient(180deg,rgba(12,52,67,0) 62%,rgba(12,52,67,.35) 100%)}
+.stage-dim{position:absolute;inset:0;background:var(--deep);opacity:.55}
+.anim .stage-dim{opacity:0}
+.scroll-cue{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:1;display:inline-flex;flex-direction:column;align-items:center;gap:10px;margin-top:44px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--on-photo);text-shadow:0 1px 10px rgba(11,42,53,.6)}
+.scroll-cue i{width:1px;height:46px;background:linear-gradient(var(--sun),transparent);animation:cue 2.2s ease-in-out infinite;transform-origin:top}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.statement .w{transition:none}
+
+.intro{position:fixed;inset:0;z-index:100;background:var(--paper);display:none;place-items:center}
+.anim .intro{display:grid}
+.intro img{width:min(240px,48vw);height:auto;opacity:0}
+.anim .hero-text h1 .ln > span{transform:translateY(105%)}
+.anim .hero-text .sub,.anim .scroll-cue{opacity:0}
+
+.wordmark .ch{display:inline-block;will-change:transform}
+.area img{will-change:transform}
+
+/* ---------- responsive ---------- */
+@media (max-width:860px){
+  .hero-text{display:block;text-align:center;margin:auto 0 0;padding-block:120px 110px}
+  .stage-bg img{object-position:40% 45%}
+  .stage-shade{background:linear-gradient(180deg,rgba(12,52,67,0) 35%,rgba(12,52,67,.7) 100%)}
+}
+@media (max-width:760px){.hero-text h1 .ln:first-child{font-size:9.6vw}.hero-text h1 .grad{font-size:6.4vw}}
+@media (max-width:1020px){
+  .area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .nav{grid-template-columns:1fr auto}
+  .nav .links{display:none}
+  .statement .wrap,.feature .wrap,.news .wrap{grid-template-columns:1fr}
+  .news .ok{grid-column:1}
+  .ev-grid{grid-template-columns:1fr;gap:36px}
+  .util .wrap{justify-content:flex-start}
+  .hero{min-height:560px}
+}
+@media (max-width:540px){
+  .area-grid{grid-template-columns:1fr}
+  .area{aspect-ratio:4/4.4}
+  .foot{grid-template-columns:1fr}
+  .nav .logo img{height:52px}
+  .hero-text{padding-block:90px 64px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="intro" id="intro" aria-hidden="true"><img data-logo="dark" src="slike/logo.jpg" alt=""></div>
+<script>try{if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}window.scrollTo(0,0);if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('anim')}catch(e){}</script>
+<div class="topbar" id="topbar">
+<div class="util"><div class="wrap">
+  <a href="#za-koga">Otroci in mladostniki</a><a href="#za-koga">Starši in družine</a><a href="#za-koga">Odrasli</a><a href="#za-koga">Organizacije</a><a href="#nacini">Počitniško varstvo in tabori</a>
+</div></div>
+
+<div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Hiša priložnosti, domov"><img data-logo="dark" src="slike/logo.jpg" alt="Hiša priložnosti"></a>
+    <nav class="links" aria-label="Glavna navigacija">
+      <a href="#top" class="on">Dobrodošli</a><a href="#o-nas">O nas</a><a href="#za-koga">Programi</a><a href="#ekipa">Ekipa</a><a href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="tools">
+      <a class="btn book" href="#kontakt">Rezervirajte pogovor</a>
+      <a class="menu" href="#top" aria-label="Meni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px"><path d="M4 7h16M4 12h16M4 17h16"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="stage-bg" aria-hidden="true"><img id="stageImg" src="slike/hero.jpg" alt=""><div class="stage-shade"></div><div class="stage-dim" id="stageDim"></div></div>
+  <header class="hero">
+    <div class="wrap hero-text" id="top">
+      <h1><span class="ln"><span>hiša priložnosti</span></span><span class="ln grad"><span>prostor za rast vseh generacij</span></span></h1>
+      <span class="label sub">Zavod za razvoj, podporo in povezovanje · Tlake</span>
+    </div>
+    <span class="scroll-cue" aria-hidden="true">Podrsajte<i></i></span>
+  </header>
+  <section class="statement" id="o-nas">
+    <canvas id="spiral" width="1240" height="1240" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <h2>Ustvarjamo podporen in vključujoč prostor za <em>osebni, čustveni, socialni in profesionalni razvoj</em> ljudi vseh generacij ter za razvoj organizacij in skupnosti.</h2>
+      <div class="side">
+        <p>Na enem mestu povezujemo različne pristope in strokovna znanja: od učne pomoči in coachinga do podpore staršem, družinam in delovnim kolektivom. Želimo, da bi vsak, ki pride k nam, našel priložnost za učenje, rast in boljše odnose.</p>
+        <a class="btn" href="#ekipa">Spoznajte nas</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<main>
+
+
+  <div class="facts" aria-label="O zavodu na kratko">
+    <div class="wrap">
+      <div class="fact" data-r><b>Neprofitno</b><span>Vsa sredstva vlagamo v naše programe.</span></div>
+      <div class="fact" data-r><b>V javno korist</b><span>Za dobrobit posameznika in skupnosti.</span></div>
+      <div class="fact" data-r><b>Povezujemo</b><span>Generacije, strokovnjake, šole in lokalno skupnost.</span></div>
+      <div class="fact" data-r><b>Projekti</b><span>Sodelujemo v nacionalnih in mednarodnih projektih.</span></div>
+    </div>
+  </div>
+
+  <section class="areas" id="za-koga">
+    <div class="wrap">
+      <div class="sec-head" data-r>
+        <div>
+          <span class="label kicker">Za koga smo</span>
+          <h2>Podpora, prilagojena vam</h2>
+          <p>Delamo z otroki, mladostniki, starši, odraslimi, družinami, skupinami in organizacijami.</p>
+        </div>
+        <a class="btn" href="#nacini">Kako delamo</a>
+      </div>
+      <div class="area-grid">
+        <a class="area" data-r href="#za-koga"><img src="slike/ucna.jpg" alt="Odprta knjiga na mizi"><span class="num">01</span><span class="bar"></span><h3>Otroci in mladostniki</h3><p>Učna pomoč, učne strategije, motivacija in koncentracija. Prepoznavamo in spremljamo učne težave.</p><span class="more">Več <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></span></a>
+        <a class="area" data-r href="#za-koga"><img src="slike/zgodbe.jpg" alt="Mama v objemu z otrokom" style="object-position:55% center"><span class="num">02</span><span class="bar"></span><h3>Starši in družine</h3><p>Podpora pri vzgojnih izzivih, starševstvu in družinski dinamiki.</p><span class="more">Več <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></span></a>
+        <a class="area" data-r href="#za-koga"><img src="slike/coaching.jpg" alt="Oseba ob morju zre v daljavo"><span class="num">03</span><span class="bar"></span><h3>Odrasli</h3><p>Coaching in osebnostni razvoj, čustvena pismenost, manj stresa in tesnobe.</p><span class="more">Več <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></span></a>
+        <a class="area" data-r href="#za-koga"><img src="slike/sodelovanje.jpg" alt="Dolga skupna miza v svetlem prostoru"><span class="num">04</span><span class="bar"></span><h3>Organizacije in skupnosti</h3><p>Razvoj kadrov in delovnih okolij, komunikacija in reševanje konfliktov.</p><span class="more">Več <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ways" id="nacini">
+    <div class="wrap">
+      <div class="sec-head" data-r>
+        <div>
+          <span class="label kicker">Kako lahko sodelujemo</span>
+          <h2>Načini dela</h2>
+          <p>Individualno ali v skupini, v živo v Tlakah ali pri vas.</p>
+        </div>
+        <a class="btn" href="#kontakt">Pošljite povpraševanje</a>
+      </div>
+      <div class="way-grid">
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><h3>Coaching in individualna obravnava</h3><p>Srečanja ena na ena, ki gredo v vašem tempu.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20c0-3 2.2-5 5-5s5 2 5 5M12 20c0-3 2.2-5 5-5s5 2 5 5"/></svg><h3>Delavnice in treningi</h3><p>Izobraževanja za skupine, šole in kolektive.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><h3>Svetovanje</h3><p>Za posameznike, skupine in organizacije.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h5l2-3 4 6 2-3h5"/></svg><h3>Mediacija in facilitacija</h3><p>Podpora pri reševanju konfliktov in skupnem dogovarjanju.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z"/><path d="M12 6v14"/></svg><h3>Učna pomoč</h3><p>Učenje učnih strategij za boljšo motivacijo in koncentracijo.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><h3>Učne težave</h3><p>Prepoznavanje, ocenjevanje in spremljanje učnih težav.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><h3>Strokovna mnenja</h3><p>Priprava strokovnih mnenj in poročil.</p></div>
+        <div class="way" data-r><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l9-15 9 15z"/><path d="M12 20v-5"/></svg><h3>Počitnice in tabori</h3><p>Počitniško varstvo, tabori in prostočasne aktivnosti za otroke in mladino.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team" id="ekipa">
+    <div class="wrap">
+      <div class="sec-head" data-r>
+        <div>
+          <span class="label kicker">Ekipa</span>
+          <h2>Ustanoviteljici</h2>
+          <p>Zavod sta ustanovili s skupno željo, da bi bila pomoč za učenje, odnose in osebno rast ljudem bližje.</p>
+        </div>
+      </div>
+      <div class="team-grid">
+        <article class="person" data-r>
+          <div class="portrait"><i>Fotografija</i><b>TV</b></div>
+          <div class="who">
+            <span class="label">Ustanoviteljica</span>
+            <h3>Tina Verbančič</h3>
+            <p class="todo">[Kratka predstavitev: izobrazba, področja dela, pristop in osebna misel.]</p>
+            <a class="more" href="#ekipa">Več o Tini <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></a>
+          </div>
+        </article>
+        <article class="person" data-r>
+          <div class="portrait"><i>Fotografija</i><b>AŠL</b></div>
+          <div class="who">
+            <span class="label">Ustanoviteljica</span>
+            <h3>Anja Špari Leben</h3>
+            <p class="todo">[Kratka predstavitev: izobrazba, področja dela, pristop in osebna misel.]</p>
+            <a class="more" href="#ekipa">Več o Anji <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></a>
+          </div>
+        </article>
+      </div>
+      <div class="team-foot" data-r>
+        <p><b>Pridružite se nam.</b> Sodelujemo z zunanjimi strokovnjaki in v delo vključujemo prostovoljce, ki jim nudimo mentorstvo in podporo.</p>
+        <a class="btn" href="#kontakt">Postanite prostovoljec</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature">
+    <div class="wrap">
+      <div class="photo" id="featPhoto"><img src="slike/novica.jpg" alt="Oseba dela na prenosnem računalniku"></div>
+      <div class="copy" data-r>
+        <span class="label">Novice</span>
+        <h2>Hiša priložnosti odpira vrata</h2>
+        <p>Maja 2026 sta ustanoviteljici podpisali pogodbo o ustanovitvi zavoda. Zdaj pripravljamo prve programe za otroke, starše, odrasle in organizacije. Prijavite se na e-novice in prvi izveste, kdaj začnemo.</p>
+        <a class="btn" href="#e-novice">Prijava na e-novice</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="events" id="dogodki">
+    <div class="wrap">
+      <div class="sec-head" data-r>
+        <h2>Dogodki <span class="example">Primeri</span></h2>
+        <div class="tabs"><a href="#dogodki" class="on">Prihajajoči</a><a href="#dogodki">Pretekli</a></div>
+      </div>
+      <div class="ev-grid">
+        <article class="ev" data-r>
+          <div class="pic"><img src="slike/dog1.jpg" alt="Beležke in pisala na mizi"><span class="tag label">Otroci in mladostniki</span></div>
+          <h3>Kako se učiti: učne strategije za osnovnošolce</h3>
+          <time datetime="2026-11-14">14. november 2026 | Tlake</time>
+          <a class="more" href="#kontakt">Prijava <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></a>
+        </article>
+        <article class="ev" data-r>
+          <div class="pic"><img src="slike/dog3.jpg" alt="Oseba sedi v travi"><span class="tag label">Starši</span></div>
+          <h3>Večer za starše: čustva, meje in pogovor doma</h3>
+          <time datetime="2026-11-26">26. november 2026 | Tlake</time>
+          <a class="more" href="#kontakt">Prijava <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></a>
+        </article>
+        <article class="ev" data-r>
+          <div class="pic"><img src="slike/dog2.jpg" alt="Ljudje v kavarni"><span class="tag label">Organizacije</span></div>
+          <h3>Komunikacija in konflikti v delovnem kolektivu</h3>
+          <time datetime="2026-12-05">5. december 2026 | Pri naročniku</time>
+          <a class="more" href="#kontakt">Povpraševanje <svg viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h24M20 1l4 4-4 4"/></svg></a>
+        </article>
+      </div>
+      <div class="ev-foot">
+        <a class="btn" href="#dogodki">Vsi dogodki</a>
+        <span class="rule"></span>
+        <div class="arrows"><a href="#dogodki" aria-label="Prejšnji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></a><a href="#dogodki" aria-label="Naslednji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stories" id="kontakt">
+    <img class="bg" src="slike/noga.jpg" alt="Gorsko jezero v jutranji svetlobi" style="object-position:center 60%">
+    <div class="wrap">
+      <span class="label" style="color:var(--sun)">Prvi korak</span>
+      <h2>kaj potrebujete danes?</h2>
+      <p>Napišite nam nekaj besed o sebi ali vaši organizaciji. Skupaj bomo poiskali obliko podpore, ki vam bo najbolj pomagala.</p>
+      <a class="btn" href="#kontakt">Rezervirajte uvodni pogovor</a>
+    </div>
+  </section>
+
+  <section class="news" id="e-novice">
+    <div class="wrap">
+      <div>
+        <h2>Učenje. Podpora. Povezovanje. Naravnost v vaš nabiralnik.</h2>
+        <p>Obveščali vas bomo o novih programih, delavnicah, počitniških taborih in projektih zavoda.</p>
+      </div>
+      <form id="nl" novalidate>
+        <label for="email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">E-poštni naslov</label>
+        <input id="email" type="email" placeholder="Vaš e-poštni naslov" autocomplete="email">
+        <button type="submit">Prijava</button>
+      </form>
+      <p class="ok" id="nl-ok" hidden>To je koncept, zato se prijava ne pošlje nikamor.</p>
+    </div>
+  </section>
+</main>
+
+<footer style="background-image:url(slike/hero.jpg)">
+  <div class="wordmark" aria-hidden="true">hiša <span>priložnosti</span></div>
+  <div class="wrap foot" data-r>
+    <div class="about">
+      <img data-logo="dark" src="slike/logo.jpg" alt="Hiša priložnosti">
+      <p>HIŠA PRILOŽNOSTI, zavod za razvoj, podporo in povezovanje, Tlake. Neprofitno in v javno korist.</p>
+      <div class="social">
+        <a href="#top" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg></a>
+        <a href="#top" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.7-4 4.3V10H7v4h3v7h4v-7h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg></a>
+        <a href="#top" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 9h3v11H5zM6.5 4a1.8 1.8 0 110 3.6 1.8 1.8 0 010-3.6zM10 9h3v1.6c.5-.9 1.6-1.8 3.3-1.8 3.2 0 3.7 2.1 3.7 4.8V20h-3v-5.6c0-1.4 0-3-1.9-3s-2.1 1.4-2.1 2.9V20h-3z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <h4>Zavod</h4>
+      <ul><li><a href="#o-nas">O nas</a></li><li><a href="#ekipa">Ekipa</a></li><li><a href="#ekipa">Prostovoljstvo</a></li><li><a href="#o-nas">Projekti</a></li></ul>
+    </div>
+    <div>
+      <h4>Programi</h4>
+      <ul><li><a href="#za-koga">Otroci in mladostniki</a></li><li><a href="#za-koga">Starši in družine</a></li><li><a href="#za-koga">Odrasli</a></li><li><a href="#za-koga">Organizacije</a></li></ul>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul><li class="txt">Tlake 51<br>1293 Šmarje - Sap</li><li class="txt">[e-pošta]</li><li class="txt">[telefon]</li></ul>
+    </div>
+  </div>
+  <div class="wrap"><div class="legal"><span>© 2026 HIŠA PRILOŽNOSTI, zavod za razvoj, podporo in povezovanje, Tlake</span><span>Varstvo osebnih podatkov · Piškotki</span></div></div>
+</footer>
+
+<script>
+(function(){
+  // Logo arrives as a white-background JPEG: key out the white (colours untouched) and crop to the artwork; it sits directly on the dark page.
+  document.querySelectorAll('img[data-logo]').forEach(function(img){
+    function run(){
+      try{
+        var c=document.createElement('canvas'); c.width=img.naturalWidth; c.height=img.naturalHeight;
+        var x=c.getContext('2d'); x.drawImage(img,0,0);
+        var d=x.getImageData(0,0,c.width,c.height), p=d.data, W=c.width;
+        var x0=W, y0=c.height, x1=0, y1=0;
+        for(var i=0;i<p.length;i+=4){
+          var r=p[i],g=p[i+1],b=p[i+2], a=1-Math.min(r,g,b)/255;
+          a=Math.max(0,(a-0.05)/0.95);
+          if(a<=0){p[i+3]=0;continue}
+          var R=(r-(1-a)*255)/a, G=(g-(1-a)*255)/a, B=(b-(1-a)*255)/a;
+          p[i]=R;p[i+1]=G;p[i+2]=B;p[i+3]=Math.round(a*255);
+          if(a>.12){ var px=(i/4)%W, py=(i/4-px)/W; if(px<x0)x0=px; if(px>x1)x1=px; if(py<y0)y0=py; if(py>y1)y1=py; }
+        }
+        x.putImageData(d,0,0);
+        if(x1>x0&&y1>y0){
+          var pad=4, cw=x1-x0+1+pad*2, ch=y1-y0+1+pad*2, o=document.createElement('canvas');
+          o.width=cw; o.height=ch; o.getContext('2d').drawImage(c,x0-pad,y0-pad,cw,ch,0,0,cw,ch); c=o;
+        }
+        img.src=c.toDataURL('image/png');
+      }catch(e){}
+    }
+    if(img.complete&&img.naturalWidth) run(); else img.addEventListener('load',run,{once:true});
+  });
+
+  // The logo's spiral, drawn as three brush layers behind the statement.
+  var cv=document.getElementById('spiral');
+  if(cv){
+    var ctx=cv.getContext('2d'), s=cv.width, cx=s/2, cy=s/2, R=s*.48;
+    window.drawSpiral=function(p){
+      ctx.clearRect(0,0,s,s);
+      var n=Math.max(2,Math.round(1200*p));
+      [{c:'#A6C437',w:34,o:0},{c:'#F5DF1A',w:14,o:-16},{c:'#F5F6EA',w:2.5,o:18}].forEach(function(L){
+        ctx.beginPath();
+        for(var i=0;i<=n;i++){var t=i/1200,a=t*3.3*Math.PI*2,r=Math.max(0,R*t+L.o);var X=cx+Math.cos(a)*r,Y=cy+Math.sin(a)*r;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)}
+        ctx.strokeStyle=L.c; ctx.lineWidth=L.w; ctx.lineCap='round'; ctx.stroke();
+      });
+    };
+    window.drawSpiral(1);
+  }
+
+  document.addEventListener('click',function(e){
+    var a=e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute('href').slice(1); e.preventDefault();
+    var t=(id==='top'||!id)?null:document.getElementById(id);
+    if(id&&id!=='top'&&!t) return;
+    glide(t?t.getBoundingClientRect().top+scrollY-70:0);
+  });
+  // our own eased scroll, so it behaves the same in every browser and frame
+  function glide(to){
+    var from=scrollY, d=to-from; if(Math.abs(d)<2) return;
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){ window.scrollTo(0,to); return; }
+    var dur=Math.min(1400,Math.max(500,Math.abs(d)*.35)), t0=performance.now();
+    (function step(now){
+      var p=Math.min(1,(now-t0)/dur), e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+      window.scrollTo(0,from+d*e);
+      if(p<1) requestAnimationFrame(step);
+    })(t0);
+  }
+  var f=document.getElementById('nl');
+  if(f) f.addEventListener('submit',function(e){e.preventDefault();document.getElementById('nl-ok').hidden=false});
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var root=document.documentElement, intro=document.getElementById('intro');
+  function done(){ root.classList.remove('anim'); if(intro) intro.remove(); }
+  if(!root.classList.contains('anim') || !window.gsap || !window.ScrollTrigger){ done(); return; }
+  setTimeout(function(){ if(document.getElementById('intro')) done(); }, 6000); // safety net
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.clearScrollMemory('manual');
+  window.scrollTo(0,0);
+  window.addEventListener('load',function(){ window.scrollTo(0,0); ScrollTrigger.refresh(); setTimeout(function(){ window.scrollTo(0,0); },120); });
+
+  // --- intro: logo appears, then the curtain opens as a circle (the spiral's centre) ---
+  var heroLines=gsap.utils.toArray('.hero-text h1 .ln > span');
+  var tl=gsap.timeline({delay:.15});
+  tl.fromTo('#intro img',{opacity:0,scale:.82,rotate:-12},{opacity:1,scale:1,rotate:0,duration:.9,ease:'power3.out'})
+    .to('#intro img',{opacity:0,scale:1.08,duration:.45,ease:'power2.in'},'+=.35')
+    .fromTo('#intro',{clipPath:'circle(150% at 50% 50%)'},{clipPath:'circle(0% at 50% 50%)',duration:1,ease:'power3.inOut'},'-=.15')
+    .fromTo('#stageImg',{scale:1.22},{scale:1.06,duration:2.2,ease:'power2.out'},'<')
+    .to(heroLines,{y:0,duration:1.1,ease:'power4.out',stagger:.14},'-=1.35')
+    .to(['.hero-text .sub','.scroll-cue'],{opacity:1,duration:.8,stagger:.15},'-=.6')
+    .add(function(){ if(intro) intro.remove(); root.classList.remove('anim'); gsap.set(heroLines,{clearProps:'transform'}); });
+
+  // --- top bar: solid after the hero, hides on scroll down, returns on scroll up ---
+  var bar=document.getElementById('topbar'), lastY=0;
+  ScrollTrigger.create({start:0,end:'max',onUpdate:function(self){
+    var y=self.scroll();
+    bar.classList.toggle('solid', y>80);
+    bar.classList.toggle('hide', y>lastY && y>400);
+    lastY=y;
+  }});
+
+  // --- stage: hero text drifts away, photo darkens, mission statement reveals word by word ---
+  gsap.to('.hero-text',{yPercent:-30,opacity:0,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom 30%',scrub:true}});
+  gsap.fromTo('#stageDim',{opacity:0},{opacity:.82,ease:'none',scrollTrigger:{trigger:'.statement',start:'top bottom',end:'top 25%',scrub:true}});
+  gsap.to('#stageImg',{scale:1.18,ease:'none',scrollTrigger:{trigger:'.stage',start:'top top',end:'bottom bottom',scrub:true}});
+
+  function splitWords(el){
+    var out=[];
+    (function walk(node){
+      Array.prototype.slice.call(node.childNodes).forEach(function(n){
+        if(n.nodeType===3){
+          var frag=document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(function(part){
+            if(!part) return;
+            if(/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(part)); return; }
+            var sp=document.createElement('span'); sp.className='w'; sp.textContent=part; frag.appendChild(sp); out.push(sp);
+          });
+          n.parentNode.replaceChild(frag,n);
+        } else if(n.nodeType===1){ walk(n); }
+      });
+    })(el);
+    return out;
+  }
+  var words=splitWords(document.querySelector('.statement h2'));
+  gsap.fromTo(words,{opacity:.16},{opacity:1,ease:'none',stagger:.1,scrollTrigger:{trigger:'.statement',start:'top 75%',end:'center 45%',scrub:true}});
+  gsap.from('.statement .side > *',{y:30,opacity:0,duration:.9,stagger:.12,ease:'power3.out',scrollTrigger:{trigger:'.statement .side',start:'top 80%'}});
+
+  // the logo's spiral draws itself as the statement scrolls through
+  var cv=document.getElementById('spiral');
+  if(cv && window.drawSpiral){
+    var prog={p:.05}; window.drawSpiral(prog.p);
+    gsap.to(prog,{p:1,ease:'none',onUpdate:function(){window.drawSpiral(prog.p)},scrollTrigger:{trigger:'.statement',start:'top 90%',end:'bottom 40%',scrub:true}});
+    gsap.to(cv,{rotate:40,ease:'none',scrollTrigger:{trigger:'.statement',start:'top bottom',end:'bottom top',scrub:true}});
+  }
+
+  // --- section reveals (only what starts below the fold, so the first frame stays complete) ---
+  var items=gsap.utils.toArray('[data-r]').filter(function(el){return el.getBoundingClientRect().top>innerHeight});
+  gsap.set(items,{y:46,opacity:0});
+  ScrollTrigger.batch(items,{start:'top 90%',once:true,onEnter:function(b){gsap.to(b,{y:0,opacity:1,duration:1,ease:'power3.out',stagger:.1,overwrite:true})}});
+
+  // --- parallax inside photos ---
+  gsap.utils.toArray('.area img').forEach(function(img){
+    gsap.fromTo(img,{yPercent:-7,scale:1.16},{yPercent:7,scale:1.16,ease:'none',scrollTrigger:{trigger:img.parentNode,start:'top bottom',end:'bottom top',scrub:true}});
+  });
+  gsap.fromTo('.stories .bg',{yPercent:-8,scale:1.18},{yPercent:8,scale:1.18,ease:'none',scrollTrigger:{trigger:'.stories',start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.fromTo('.ev .pic img',{scale:1.12},{scale:1,ease:'none',scrollTrigger:{trigger:'.ev-grid',start:'top bottom',end:'bottom center',scrub:true}});
+  gsap.from('.stories .wrap > *',{y:40,opacity:0,duration:1,stagger:.12,ease:'power3.out',scrollTrigger:{trigger:'.stories',start:'top 70%'}});
+
+  // --- feature photo wipes open, like a curtain ---
+  gsap.fromTo('#featPhoto img',{clipPath:'inset(0 100% 0 0)',scale:1.15},{clipPath:'inset(0 0% 0 0)',scale:1,duration:1.4,ease:'power4.inOut',scrollTrigger:{trigger:'#featPhoto',start:'top 80%'}});
+
+  // --- footer wordmark: letters rise one by one, coloured along the brush gradient ---
+  var wm=document.querySelector('.wordmark');
+  if(wm){
+    var g=wm.querySelector('span'), chars=[];
+    var a=[245,223,26], z=[166,196,55];
+    function splitChars(node,colorize){
+      var txt=node.textContent; node.textContent=''; var letters=txt.replace(/\s/g,'').length, k=0;
+      txt.split('').forEach(function(c){
+        if(c===' '){ node.appendChild(document.createTextNode(' ')); return; }
+        var sp=document.createElement('span'); sp.className='ch'; sp.textContent=c;
+        if(colorize){ var t=letters>1?k/(letters-1):0; sp.style.color='rgb('+a.map(function(v,i){return Math.round(v+(z[i]-v)*t)}).join(',')+')'; }
+        k++; node.appendChild(sp); chars.push(sp);
+      });
+    }
+    var first=wm.firstChild; var lead=document.createElement('span'); lead.textContent=first.textContent; wm.replaceChild(lead,first);
+    splitChars(lead,false);
+    g.style.background='none'; g.style.webkitBackgroundClip='border-box'; g.style.backgroundClip='border-box'; g.style.color='inherit';
+    splitChars(g,true);
+    gsap.from(chars,{yPercent:110,duration:1,ease:'power4.out',stagger:.035,scrollTrigger:{trigger:wm,start:'top 85%'}});
+  }
+})();
+</script>
+
+</body>
+</html>
